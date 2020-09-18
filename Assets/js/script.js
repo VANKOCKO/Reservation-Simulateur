@@ -189,6 +189,7 @@ jQuery(document).ready(function($){
                          /**
                         Supprimer element du tableau
                         */
+                       
                         stockageInfo.pop();
                         
                         /**
