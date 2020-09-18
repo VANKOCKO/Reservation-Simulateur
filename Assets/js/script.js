@@ -266,132 +266,25 @@ jQuery(document).ready(function($){
                               var element = $(this).val()     
                               grilleTarif.forEach(function (val) {
                                     if(val.intitule == element ){
-                                          setPrixTarif(val.prix)
                                           FonctionsousTotal(val.prix,getLongueur(),getLargeur(),getHauteur(),getPoids(),e); 
                                     }
                               })  
                   })
                   $(this).find("td:eq(1)").find("input").on('keyup',function (e) {
-                              setLongueur($(this).val());
                               FonctionsousTotal(getPrixTarif(),$(this).val(),getLargeur(),getHauteur(),getPoids(),e); 
-
-                              /**
-                              $(this).parent().next().next().children().html($(this).val())
-                              var totalLigne = $(this).val();
-                              if(totalLigne == ""){
-                                    $(this).parent().next().children().html("")
-                              }
-                              else      
-                              { 
-                                  totalSousTotal = totalSousTotal + totalLigne;
-                                  $(this).parent().next().children().html(totalLigne); 
-                                  $(this).parent().parent().next().find("td:eq(3)").children().html(totalSousTotal);
-                              }
-                               */
                   })
 
                   $(this).find("td:eq(2)").find("input").on('keyup',function (e) {
                               FonctionsousTotal(getPrixTarif(),getLongueur(),$(this).val(),getHauteur(),getPoids(),e); 
-                              /** 
-                              var totalLigne = $(this).val();
-                              if(totalLigne == ""){
-                                    $(this).parent().next().children().html("")
-                              }
-                              else      
-                              { 
-                                  totalSousTotal = totalSousTotal + totalLigne;
-                                  $(this).parent().next().children().html(totalLigne); 
-                                  $(this).parent().parent().next().find("td:eq(3)").children().html(totalSousTotal);
-                              }
-                              */
                   })
 
                   $(this).find("td:eq(3)").find("input").on('keyup',function (e) {
-
                               FonctionsousTotal(getPrixTarif(),getLongueur(),getLargeur(),$(this).val(),getPoids(),e); 
-                              /**
-                              var totalLigne = $(this).val();
-                              volume = $(this).val() * getLongueur() * getLargeur(); 
-                              if(totalLigne == ""){
-                                    $(this).parent().next().children().html("")
-                              }
-                              else      
-                              { 
-                              totalSousTotal = totalSousTotal + totalLigne;
-                              $(this).parent().next().children().html(totalLigne); 
-                              
-                              $(this).parent().parent().next().find("td:eq(3)").children().html(totalSousTotal);
-                              }
-                              */
                   })
                   var stockageInfo = []
                   var sousTotal = 0 
                   $(this).find("td:eq(4)").find("input").on('keyup',function (e) {
-                        
-                              var eventClavier = e.which
-                              setPoids($(this).val());
-                              volume =  getLongueur() * getLargeur() * getHauteur();
-                              poidsVolumetrique = volume / 6000      
-                              /**
-                               *  Verification du maximum entre le poid et le poid volumique  
-                               */
-                              /**
-                               *     Exception sur evenemet zero 
-                               */
-                              if($(this).val() == ""){
-                                   valeurMaximalePoidEtPoidVolumique = 0
-                                   totalLigne = valeurMaximalePoidEtPoidVolumique * getPrixTarif();
-                                   totalLigne = 0
-                              }
-                              else 
-                                          {
-                                                valeurMaximalePoidEtPoidVolumique = Math.max($(this).val(),poidsVolumetrique)
-                                                totalLigne = valeurMaximalePoidEtPoidVolumique * getPrixTarif();
-                                                /**
-                                                 *   gestions des evenement entree sur poids   
-                                                 */
-                                                if(eventClavier == 8 || eventClavier == 46)
-                                                {                 /**
-                                                                  Supprimer element du tableau
-                                                                  */
-                                                                  stockageInfo.pop();
-                                                                  
-                                                                  /**
-                                                                   *    
-                                                                   */
-                                                                  totalLigne = stockageInfo[stockageInfo.length - 1];
-                                                                  /**
-                                                                   *    Vider le tableau apres le dernier element supprimer   
-                                                                   */
-                                                                  if(stockageActionInputTaille.length == 1){
-                                                                        stockageActionInputTaille = []
-                                                                        stockageInfo = []                                                                                        
-                                                                  }
-                                                                  if(totalLigne == ""){
-                                                                        $(this).parent().next().children().html("")
-                                                                  }
-                                                                  else      
-                                                                  { 
-                                                                        $(this).parent().next().html(totalLigne);
-                                                                        $(this).parent().next().children().html(totalLigne)
-                                                                        setSousTotal(totalLigne);
-                                                                  } 
-                                                                    
-                                                }
-                                                else {
-                                                       stockageInfo.push(totalLigne);
-                                                       stockageActionInputTaille.push($(this).val())
-                                                      if(totalLigne == ""){
-                                                            $(this).parent().next().children().html("")
-                                                      }
-                                                      else      
-                                                      { 
-                                                            $(this).parent().next().html(totalLigne);
-                                                            setSousTotal(totalLigne);
-                                                      }  
-                                                }                          
-                        }
-                                   
+                              FonctionsousTotal(getPrixTarif(),getLongueur(),$(this).val(),getHauteur(),$(this).val(),e);             
                   })
                  
             });
