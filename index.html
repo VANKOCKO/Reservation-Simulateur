@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./Assets/css/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./Assets/css/style.css">
+    <title>Document</title>
+</head>
+<body>
+  <div class="container-fluid">
+     <div class="row mt-4">
+            <div class="col-1"></div>
+            <div class="col-10">
+                    <table class="table"   id="tableau"> 
+                      <thead>
+                            <th style="width: 400px;">Nature Colis</th>
+                            <th>Longueur</th>
+                            <th>largeur</th>
+                            <th>hauteur</th>
+                            <th>poids</th>
+                            <th>Sous-Total</th>
+                            <th><button  class="btn btn-success"  id="btnAjouterLigne">+</button></th>
+                      </thead>
+                      <tbody  id="tableauContenu"> 
+                      </tbody>
+                  </table>
+                  total : <p   id="total"></p>
+                  <button class="btn btn-primary" onclick="enregistrerDonne()" id="enregistrerDonnees">Enregistrer</button>
+          </div>
+          <div class="col-1"></div> 
+      </div>
+  </div>
+<script src="./Assets/js/jquery/jquery.js"></script> 
+<script src="./Assets/js/script.js"></script>  
+</body>
+</html>
