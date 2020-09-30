@@ -1,12 +1,12 @@
 jQuery(document).ready(function($){
 
-
       // Declaration des variables
       var table = $("#tableau");
       var trTbl= []
       var inputNombre = "<input  class='form-control'/>"; 
       var td ="<td>";      
-      var grilleTarif = [
+      var grilleTarif = 
+           [
                                 { 
                                       intitule: "Vetements", 
                                       prix : 12 
@@ -63,9 +63,7 @@ jQuery(document).ready(function($){
                                       intitule:"Medicaments", 
                                       prix:10
                                 }         
-                    
-                  ]
-
+            ]
       var inputNatureColis ="<td>"+
                                    "<select class='form-control'>" +
                                                 "<optgroup label='ARTICLES DE MODE'>"
@@ -113,6 +111,7 @@ jQuery(document).ready(function($){
       var largeur 
       var hauteur
       var poids 
+      var descriptionProduit
       var prixTarif
       var totalSousTotal
       var volume = 0
@@ -120,14 +119,19 @@ jQuery(document).ready(function($){
       var valeurMaximalePoidEtPoidVolumique = 0
       var totalLigne = 0
       var tableauSousTotal = []
-      var totalSousTotal
+      var totalSousTotal = 0
       var diminuerSousTotal = 0
       var somme = 0 
-      var nbClick = 0 
-      var stockageActionInputTaille = []
+      var affichageTotalLigne
       /**
        *   setter et getter  des variables 
        * */ 
+      function setDescriptionProduit(valeur) {
+            descriptionProduit = valeur
+      }
+      function getdescriptionProduit() {
+            return descriptionProduit
+      }
       function setLongueur(valeur){
             longueur = valeur;  
       }
@@ -170,134 +174,235 @@ jQuery(document).ready(function($){
       function getDiminuerSousTotal() {
               return diminuerSousTotal;
       }
+      function setAffichageTotaligne(valeur) {
+              affichageTotalLigne = valeur
+      }
+      function getAffichageTotaligne() {
+            return affichageTotalLigne
+      }
       /**
        *    fonction sousTotal : modifiable quelque soit le parametre touche 
        */
-       function FonctionsousTotal(prixColis,longueur,largeur,hauteur,poids,event) {
-                 volume =  longueur * largeur* hauteur;
-                 poidsVolumetrique = volume / 6000 ;
-                 var eventClavier = event.which
-                 if(longueur != "" && largeur != "" && hauteur != "" && poids != ""){
-                     valeurMaximalePoidEtPoidVolumique = Math.max($(this).val(),poidsVolumetrique)
+      var stockageInfo = []
+      var sousTotal = 0 
+      /** 
+      function FonctionsousTotal(prixColis,longueur,largeur,hauteur,poids,event,nodeEl)
+      {
+                  prixColis = getPrixTarif()
+                 // nodeEl.parent().parent().find("td:eq(5)").html("")
+                  var eventClavier = event.which
+                  // Affiche le prix unitaire de chaque article
+                  ///console.log(prixColis)
+                  //nodeEl.parent().parent().find("td:eq(5)").html(prixColis)
+                 if( (typeof(longueur) != "undefined" && longueur != "") && (typeof(largeur) != "undefined" && largeur != "") && (typeof(hauteur) != "undefined" && hauteur != "") && (typeof(poids) != "undefined" && poids != ""))
+                  {
+                     volume =  longueur * largeur* hauteur;
+                     poidsVolumetrique = volume / 6000 ;
+                     valeurMaximalePoidEtPoidVolumique = Math.max(poids,poidsVolumetrique)
                      totalLigne = valeurMaximalePoidEtPoidVolumique * prixColis;
-
-                     /**
-                     *   gestions des evenement entree sur poids   
-                     */
+                    
                      if(eventClavier == 8 || eventClavier == 46)
                       {                
-                         /**
-                        Supprimer element du tableau
-                        */
-                       
-                        stockageInfo.pop();
-                        
-                        /**
-                         *    
-                         */
-                        totalLigne = stockageInfo[stockageInfo.length - 1];
-                        /**
-                         *    Vider le tableau apres le dernier element supprimer   
-                         */
-                        if(stockageActionInputTaille.length == 1){
-                              stockageActionInputTaille = []
-                              stockageInfo = []                                                                                        
-                        }
-                        if(totalLigne == ""){
-                              $(this).parent().next().children().html("")
-                        }
-                        else      
-                        { 
-                              $(this).parent().next().html(totalLigne);
-                              $(this).parent().next().children().html(totalLigne)
-                              setSousTotal(totalLigne);
-                        } 
-                                                
-                        }
-                        else {
-                                    stockageInfo.push(totalLigne);
-                                    stockageActionInputTaille.push($(this).val())
+                              
+                              stockageInfo.pop();
+                             
+                              totalLigne = stockageInfo[stockageInfo.length - 1];
+                             
+                              if(stockageInfo.length == 1){
+                                  stockageInfo = []                                                                                        
+                              }
                               if(totalLigne == ""){
-                                    $(this).parent().next().children().html("")
+                                    nodeEl.parent().parent().find("td:eq(5)").html("")
                               }
                               else      
                               { 
-                                    $(this).parent().next().html(totalLigne);
+                                    nodeEl.parent().parent().find("td:eq(5)").html(totalLigne)
+                                    setSousTotal(totalLigne);
+                              }                     
+                      }
+                     else 
+                      {
+                              if(totalLigne == ""){
+                                    nodeEl.parent().parent().find("td:eq(5)").html("")
+                              }
+                              else      
+                              { 
+                                    nodeEl.parent().parent().find("td:eq(5)").html(totalLigne)
+                                    //if(){
+                                    // console.log(nodeEl.parent().parent().find("td:eq(5)").html(totalLigne))
+                                    //}
+                                    console.log(nodeEl.parent().parent().find("td:eq(5)").html())
                                     setSousTotal(totalLigne);
                               }  
-                        } 
-
-                           
+                      }  
                  }
-                 else {
-                     valeurMaximalePoidEtPoidVolumique = 0
-                     totalLigne = valeurMaximalePoidEtPoidVolumique * getPrixTarif();
-                     totalLigne = 0
+                 else 
+                 {
+                        valeurMaximalePoidEtPoidVolumique = 0
+                        totalLigne = valeurMaximalePoidEtPoidVolumique * getPrixTarif();
+                        totalLigne = 0
                  }
-
-       }
+       } **/
+      
       $("#btnAjouterLigne").on('click',function () {
             /**
             *  Ajout de la ligne dans le tableau 
             */
             $("#tableauContenu").append(tr);
-            if((typeof(getSousTotal()) != "undefined" && getSousTotal() != "")){
-                  tableauSousTotal.push(getSousTotal());  
+            if(getSousTotal()!= "undefined" && typeof(getSousTotal())!="undefined" && getSousTotal() != ""){
+                  tableauSousTotal.push(getSousTotal())
+
+                  //console.log("Ajouter")
+                  console.log(tableauSousTotal)
+                  somme = tableauSousTotal.reduce(function (accumulateur,valeurCourante) {
+                         return accumulateur + valeurCourante
+                  })
+                  
                   for(var i = 0; i<=tableauSousTotal.length; i++){
-                        if(typeof(tableauSousTotal[i]) != "undefined"){
-                                somme = somme + tableauSousTotal[i];
+                        if(typeof(tableauSousTotal[i]) == "undefined"){
+                              tableauSousTotal.splice(i,1)
                         }
-                  }   
-                  console.log(somme)                     
+                        else 
+                        {
+                              //somme = tableauSousTotal[i];
+                        }
+                  } 
             }
-            if(somme != 0){
-                  $("#total").html(somme);
-                  if(getDiminuerSousTotal() == 0 ){
-                        $("#total").html(somme);
-                  }else {
-                          
-                         somme = somme - getDiminuerSousTotal();     
-                  }
+            if(somme != 0)
+            { 
+                  $("#total").html(somme); 
             }
             $("#tableauContenu > tr").each(function (index) {
                   /**
                    *   Recuperation du prix selon la nature du produit selectionne par l'utilisateur
                    */
                   $(this).find("td:eq(0)").find("select").on('change',function (e) { 
+                              var nodeElement = $(this);
                               var element = $(this).val()     
                               grilleTarif.forEach(function (val) {
                                     if(val.intitule == element ){
-                                          FonctionsousTotal(val.prix,getLongueur(),getLargeur(),getHauteur(),getPoids(),e); 
+                                          setDescriptionProduit(val.intitule)
+                                          setPrixTarif(val.prix)
+                                          volume =  getLongueur() * getLargeur()* getHauteur();
+                                          poidsVolumetrique = volume / 6000 ;
+                                          valeurMaximalePoidEtPoidVolumique = Math.max(getPoids(),poidsVolumetrique)
+                                          totalLigne = valeurMaximalePoidEtPoidVolumique * getPrixTarif();
+                                          
                                     }
                               })  
                   })
                   $(this).find("td:eq(1)").find("input").on('keyup',function (e) {
-                              FonctionsousTotal(getPrixTarif(),$(this).val(),getLargeur(),getHauteur(),getPoids(),e); 
+                              var nodeElement = $(this);
+                              setLongueur($(this).val())
+                             // FonctionsousTotal(getPrixTarif(),$(this).val(),getLargeur(),getHauteur(),getPoids(),e,nodeElement); 
                   })
-
                   $(this).find("td:eq(2)").find("input").on('keyup',function (e) {
-                              FonctionsousTotal(getPrixTarif(),getLongueur(),$(this).val(),getHauteur(),getPoids(),e); 
+                              var nodeElement = $(this);
+                              setLargeur($(this).val())
+                            //  FonctionsousTotal(getPrixTarif(),getLongueur(),$(this).val(),getHauteur(),getPoids(),e,nodeElement); 
                   })
-
                   $(this).find("td:eq(3)").find("input").on('keyup',function (e) {
-                              FonctionsousTotal(getPrixTarif(),getLongueur(),getLargeur(),$(this).val(),getPoids(),e); 
+                              var nodeElement = $(this);
+                              setHauteur($(this).val())
+                              //FonctionsousTotal(getPrixTarif(),getLongueur(),getLargeur(),$(this).val(),getPoids(),e,nodeElement); 
                   })
-                  var stockageInfo = []
-                  var sousTotal = 0 
                   $(this).find("td:eq(4)").find("input").on('keyup',function (e) {
-                              FonctionsousTotal(getPrixTarif(),getLongueur(),$(this).val(),getHauteur(),$(this).val(),e);             
-                  })
-                 
-            });
 
+                              var nodeElement = $(this);
+                              var eventClavier = e.which
+                              setPoids($(this).val())
+                              //setAffichageTotaligne($(this).parent().next().children())
+                              if( (typeof(getLongueur()) != "undefined" && getLongueur() != "") && (typeof(getLargeur()) != "undefined" && getLargeur() != "") && (typeof(getHauteur()) != "undefined" && getHauteur() != "") && (typeof(getPoids()) != "undefined" && getPoids() != ""))
+                              {
+                                    volume =  getLongueur() * getLargeur()* getHauteur();
+                                    poidsVolumetrique = volume / 6000 ;
+                                    valeurMaximalePoidEtPoidVolumique = Math.max(getPoids(),poidsVolumetrique)
+                                    totalLigne = valeurMaximalePoidEtPoidVolumique * getPrixTarif();
+                                    /**
+                                     *   gestions des evenement entree sur poids   
+                                     */
+                                    if(eventClavier == 8 || eventClavier == 46)
+                                    {                
+                                                /**
+                                                Supprimer element du tableau
+                                                */
+                                                stockageInfo.pop();
+                                                /**
+                                                 *    
+                                                 */
+                                                totalLigne = stockageInfo[stockageInfo.length - 1];
+                                                /**
+                                                 *    Vider le tableau apres le dernier element supprimer   
+                                                 */
+                                                if(stockageInfo.length == 1){
+                                                   stockageInfo = []  
+                                                   nodeElement.parent().parent().find("td:eq(5)").html("")
+
+                                                
+                                                }
+                                                if(totalLigne == ""){
+                                                      nodeElement.parent().parent().find("td:eq(5)").html("")
+                                                }
+                                                else      
+                                                { 
+                                                      nodeElement.parent().parent().find("td:eq(5)").html(totalLigne)
+                                                      setSousTotal(totalLigne);
+                                                }                     
+                                    }
+                                    else 
+                                    {
+                                                if(totalLigne == ""){
+                                                      nodeElement.parent().parent().find("td:eq(5)").html("")
+                                                }
+                                                else      
+                                                {     
+                                                      stockageInfo.push(totalLigne)
+                                                      console.log("ajouter sur le tableau")
+                                                      console.log(stockageInfo)
+                                                      nodeElement.parent().parent().find("td:eq(5)").html(totalLigne)
+                                                      //if(){
+                                                      // console.log(nodeEl.parent().parent().find("td:eq(5)").html(totalLigne))
+                                                      //}
+                                                      console.log(nodeElement.parent().parent().find("td:eq(5)").html())
+                                                      setSousTotal(totalLigne);
+                                                }  
+                                    }  
+                              }
+                              else 
+                              {
+                                          valeurMaximalePoidEtPoidVolumique = 0
+                                          totalLigne = valeurMaximalePoidEtPoidVolumique * getPrixTarif();
+                                          totalLigne = 0
+                              }
+                                               // FonctionsousTotal(getPrixTarif(),getLongueur(),$(this).val(),getHauteur(),$(this).val(),e,nodeElement);             
+                  })
+            });
             /**
             *     supprimer la ligne
             */
-            $("#tableauContenu > tr").find("td:eq(6)").children().on("click", function () {
-                        if(typeof(tableauSousTotal[i]) != "undefined" && $(this).parent().prev().html() != "<p></p>" ){
-                              somme = somme - $(this).parent().prev().html();
-                        }
-                        $(this).parent().parent().remove();
-            })       
+            $("#tableauContenu > tr").find("td:eq(6)").children().on("click", function (event, index) {
+                              //console.log("taille : ",$(this).parent().parent().length)
+                              //console.log("index :", $(this).parent().parent().index())
+                              if($(this).parent().parent().find("td:eq(5)").html == "<p></p>"){
+                                    $(this).parent().parent().remove();
+                              }
+                              else{
+                                    $(this).parent().parent().remove();
+                                    if(tableauSousTotal.length == 0){
+                                          $(this).parent().parent().remove();
+
+                                    }else{
+                                          tableauSousTotal.splice($(this).parent().parent().index(),1)
+
+                                          somme = tableauSousTotal.reduce(function (accumulateur,valeurCourante) {
+                                                return accumulateur + valeurCourante
+                                          })
+                                          $("#total").html(somme)
+                                    }
+                                   
+                              }
+                              
+            }) 
+            
       })
 })
