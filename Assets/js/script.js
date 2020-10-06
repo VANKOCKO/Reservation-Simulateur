@@ -123,6 +123,7 @@ jQuery(document).ready(function($){
       var diminuerSousTotal = 0
       var somme = 0 
       var affichageTotalLigne
+      var totalLigneSuivante = 0
       /**
        *   setter et getter  des variables 
        * */ 
@@ -180,80 +181,107 @@ jQuery(document).ready(function($){
       function getAffichageTotaligne() {
             return affichageTotalLigne
       }
+
+      /**
+       *         C.R.U.D  
+       */
+
+      /**
+       *  Creer une ligne
+       */
+
+      var lignes =
+               { 
+                      NumLigne: 0,
+                      NomProduit: "",
+                      prixDuProduit : "",
+                      longueur : 0,
+                      largeur : 0 ,
+                      hauteur : 0,
+                      poids : 0,
+                      totaligne : 0
+                }
+
+            
+       var tableauLigne = []     
+      /**
+       * 
+       *  Description : 
+       *     Cette fonction permet creer des lignes puis enregistrer dans un tableau
+       * @param { Integer } NumeroLigne 
+       * @param { String } NomDuProduit 
+       * @param { Double } prixDuProduit 
+       * @param { Double } longueur 
+       * @param { Double }  largeur 
+       * @param { Double } hauteur 
+       * @param { Double } poids 
+       * @param { Double } totaligne 
+       */
+      function creerLigne(NumeroLigne, NomDuProduit,prixDuProduit,longueur,largeur,hauteur,poids,totaligne) {
+              var nouvelleLigne = new lignes(NumeroLigne, NomDuProduit, prixDuProduit,longueur,largeur,hauteur,poids,totaligne)
+              tableauLigne.push(nouvelleLigne)     
+              return tableauLigne 
+      }
+
+      /**
+       * 
+       *  Lire une ligne
+       */
+      function lireLigne() {
+            console.log(tableauLigne)
+            /**
+                  console.log("Je me trouve dans la ligne ", NumeroLigne , "Je vais recuperer des donnees") 
+                  console.log(" Nom du produit est : ", NomDuProduit)
+                  console.log("Prix du produit est de : ", prixDuProduit)
+                  console.log("Longeur colis: ", longueur)
+                  console.log("Largeur colis : ", largeur)
+                  console.log("Hauteur colis : ", hauteur)
+                  console.log("Poids colis : ", poids)
+                  console.log("Total de ligne :  ", totaligne)
+
+             */
+
+}
+
+      /**
+       *  Modifier une ligne 
+       */
+      
+      function modifierLigne() {
+               
+            
+      }
+
+      /**
+       *  Supprimer une ligne
+       */
+      function supprimerLigne(params) {
+            
+      }
+
       /**
        *    fonction sousTotal : modifiable quelque soit le parametre touche 
        */
       var stockageInfo = []
-      var sousTotal = 0 
-      /** 
-      function FonctionsousTotal(prixColis,longueur,largeur,hauteur,poids,event,nodeEl)
-      {
-                  prixColis = getPrixTarif()
-                 // nodeEl.parent().parent().find("td:eq(5)").html("")
-                  var eventClavier = event.which
-                  // Affiche le prix unitaire de chaque article
-                  ///console.log(prixColis)
-                  //nodeEl.parent().parent().find("td:eq(5)").html(prixColis)
-                 if( (typeof(longueur) != "undefined" && longueur != "") && (typeof(largeur) != "undefined" && largeur != "") && (typeof(hauteur) != "undefined" && hauteur != "") && (typeof(poids) != "undefined" && poids != ""))
-                  {
-                     volume =  longueur * largeur* hauteur;
-                     poidsVolumetrique = volume / 6000 ;
-                     valeurMaximalePoidEtPoidVolumique = Math.max(poids,poidsVolumetrique)
-                     totalLigne = valeurMaximalePoidEtPoidVolumique * prixColis;
-                    
-                     if(eventClavier == 8 || eventClavier == 46)
-                      {                
-                              
-                              stockageInfo.pop();
-                             
-                              totalLigne = stockageInfo[stockageInfo.length - 1];
-                             
-                              if(stockageInfo.length == 1){
-                                  stockageInfo = []                                                                                        
-                              }
-                              if(totalLigne == ""){
-                                    nodeEl.parent().parent().find("td:eq(5)").html("")
-                              }
-                              else      
-                              { 
-                                    nodeEl.parent().parent().find("td:eq(5)").html(totalLigne)
-                                    setSousTotal(totalLigne);
-                              }                     
-                      }
-                     else 
-                      {
-                              if(totalLigne == ""){
-                                    nodeEl.parent().parent().find("td:eq(5)").html("")
-                              }
-                              else      
-                              { 
-                                    nodeEl.parent().parent().find("td:eq(5)").html(totalLigne)
-                                    //if(){
-                                    // console.log(nodeEl.parent().parent().find("td:eq(5)").html(totalLigne))
-                                    //}
-                                    console.log(nodeEl.parent().parent().find("td:eq(5)").html())
-                                    setSousTotal(totalLigne);
-                              }  
-                      }  
-                 }
-                 else 
-                 {
-                        valeurMaximalePoidEtPoidVolumique = 0
-                        totalLigne = valeurMaximalePoidEtPoidVolumique * getPrixTarif();
-                        totalLigne = 0
-                 }
-       } **/
+      var sousTotal = 0
+
+      
       
       $("#btnAjouterLigne").on('click',function () {
             /**
             *  Ajout de la ligne dans le tableau 
             */
             $("#tableauContenu").append(tr);
+            /**
+            *    Remplir le tableau info dans le cas ou aucune entreees n'est utilisee  
+            */
+           
+            if(getSousTotal() == 0){
+                 tableauSousTotal.push(getSousTotal())
+            }
             if(getSousTotal()!= "undefined" && typeof(getSousTotal())!="undefined" && getSousTotal() != ""){
-                  tableauSousTotal.push(getSousTotal())
 
-                  //console.log("Ajouter")
-                  console.log(tableauSousTotal)
+                  tableauSousTotal.push(getSousTotal())
                   somme = tableauSousTotal.reduce(function (accumulateur,valeurCourante) {
                          return accumulateur + valeurCourante
                   })
@@ -276,18 +304,30 @@ jQuery(document).ready(function($){
                   /**
                    *   Recuperation du prix selon la nature du produit selectionne par l'utilisateur
                    */
-                  $(this).find("td:eq(0)").find("select").on('change',function (e) { 
+                  $(this).find("td:eq(0)").find("select").on('change',function (e) {  
                               var nodeElement = $(this);
-                              var element = $(this).val()     
+                              var element = $(this).val()   
                               grilleTarif.forEach(function (val) {
                                     if(val.intitule == element ){
                                           setDescriptionProduit(val.intitule)
                                           setPrixTarif(val.prix)
-                                          volume =  getLongueur() * getLargeur()* getHauteur();
-                                          poidsVolumetrique = volume / 6000 ;
-                                          valeurMaximalePoidEtPoidVolumique = Math.max(getPoids(),poidsVolumetrique)
-                                          totalLigne = valeurMaximalePoidEtPoidVolumique * getPrixTarif();
-                                          
+                                          //lireLigne(nodeElement.parent().parent().index(),val.intitule,val.prix,getLongueur(),getLargeur(),getHauteur(),getPoids(),totalLigne)  
+                                          /**
+                                           *   Affiche le prix unitaire a condition que les autres entrees ne sont utilisees 
+                                           */
+                                          if(typeof getLongueur() == "undefined" && typeof  getLargeur() == "undefined" && typeof  getHauteur() == "undefined" ){
+                                                  nodeElement.parent().parent().find("td:eq(5)").html(val.prix) 
+                                          }
+                                          else 
+                                          {
+                                                volume =  getLongueur() * getLargeur() * getHauteur();
+                                                poidsVolumetrique = volume / 6000 ;
+                                                valeurMaximalePoidEtPoidVolumique = Math.max(getPoids(),poidsVolumetrique)
+                                                totalLigne = valeurMaximalePoidEtPoidVolumique * getPrixTarif();
+                                                nodeElement.parent().parent().find("td:eq(5)").html(totalLigne)
+                                                creerLigne(nodeElement.parent().parent().index(), val.intitule,val.prix,getLongueur(),getLargueur(),getHauteur(),getPoids(),totaligne)
+
+                                          }
                                     }
                               })  
                   })
@@ -357,52 +397,55 @@ jQuery(document).ready(function($){
                                                 else      
                                                 {     
                                                       stockageInfo.push(totalLigne)
-                                                      console.log("ajouter sur le tableau")
-                                                      console.log(stockageInfo)
+            
                                                       nodeElement.parent().parent().find("td:eq(5)").html(totalLigne)
+                                                      //console.log()
+                                                      console.log(nodeElement.parent().parent().find("td:eq(5)").text())
                                                       //if(){
                                                       // console.log(nodeEl.parent().parent().find("td:eq(5)").html(totalLigne))
                                                       //}
                                                       console.log(nodeElement.parent().parent().find("td:eq(5)").html())
                                                       setSousTotal(totalLigne);
+                                                      creerLigne(nodeElement.parent().parent().index(), getdescriptionProduit(),getPrixTarif(),getLongueur(),getLargueur(),getHauteur(),getPoids(),totaligne)
                                                 }  
                                     }  
                               }
                               else 
                               {
+                                          stockageInfo.push(0)
                                           valeurMaximalePoidEtPoidVolumique = 0
                                           totalLigne = valeurMaximalePoidEtPoidVolumique * getPrixTarif();
                                           totalLigne = 0
                               }
                                                // FonctionsousTotal(getPrixTarif(),getLongueur(),$(this).val(),getHauteur(),$(this).val(),e,nodeElement);             
                   })
+
             });
             /**
             *     supprimer la ligne
-            */
+           */
             $("#tableauContenu > tr").find("td:eq(6)").children().on("click", function (event, index) {
-                              //console.log("taille : ",$(this).parent().parent().length)
-                              //console.log("index :", $(this).parent().parent().index())
-                              if($(this).parent().parent().find("td:eq(5)").html == "<p></p>"){
+                              if($(this).parent().parent().find("td:eq(5)").html() == "<p></p>"){
                                     $(this).parent().parent().remove();
+                                    tableauSousTotal.splice($(this).parent().parent().index(),1)
                               }
                               else{
-                                    $(this).parent().parent().remove();
                                     if(tableauSousTotal.length == 0){
                                           $(this).parent().parent().remove();
-
+                                          somme = 0
                                     }else{
-                                          tableauSousTotal.splice($(this).parent().parent().index(),1)
-
+                                          for(var j=0; j<tableauSousTotal.length; j++){
+                                                if(j == $(this).parent().parent().index()){
+                                                      tableauSousTotal.splice(j,1)
+                                                      $(this).parent().parent().remove();
+                                                }
+                                          }
                                           somme = tableauSousTotal.reduce(function (accumulateur,valeurCourante) {
                                                 return accumulateur + valeurCourante
                                           })
                                           $("#total").html(somme)
-                                    }
-                                   
-                              }
-                              
-            }) 
-            
+                                    }     
+                              }                                                  
+            })
       })
 })
